@@ -23,6 +23,21 @@ Then, run the following command to require the library:
 ```bash
 $ php composer.phar require akeneo/api-php-client php-http/guzzle6-adapter
 ```
+However, since the client is in beta, Composer will refuse to install it:
+```bash
+Could not find package akeneo/api-php-client at any version for your minimum-stability (stable). Check the package spelling or your minimum-stability
+```
+Specifying the version of the library will solve this issue:
+```bash
+$ php composer.phar require akeneo/api-php-client:1.0.0-beta2 php-http/guzzle6-adapter
+```
+You can find out what the available versions are by looking at the error message of the following command:
+```bash
+php composer.phar require akeneo/api-php-client:*
+    # ....
+    # The requested package akeneo/api-php-client * is satisfiable by akeneo/api-php-client[1.0.0-beta1, 1.0.0-beta2, dev-API-267, dev-API-409, dev-API-410, dev-CLOUD-322, dev-master] but these conflict with your requirements or minimum-stability.
+    # ...
+```
 
 If you want to use another HTTP client implementation, you can check [here](https://packagist.org/providers/php-http/client-implementation) the full list of HTTP client implementations. 
 
@@ -75,6 +90,7 @@ $searchFilters = $searchBuilder->getFilters();
 
 $firstPage = $client->getProductApi()->listPerPage(50, true, ['search' => $searchFilters]);
 
+$page = $firstPage;
 echo $page->getCount();
 
 foreach ($page->getItems() as $product) {
